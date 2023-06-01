@@ -18,16 +18,16 @@ function Home() {
     const [types, setTypes] = useState([]);
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [selectedCard, setSelectedCard] = useState({});
-    
 
     useEffect(() => {
         const cachedData = getCachedData();
-        if (cachedData && cachedData.length === pageSize) {
+        if (cachedData && ( cachedData.length >= currentPage * pageSize)) {
             setCards(cachedData);
             setFilteredCards(cachedData);
             return;
         }
         const fetchCards = async () => {
+            console.log("fetching cards");
             try {
                 const response = await axios.get(`https://api.magicthegathering.io/v1/cards?page=${currentPage}&pageSize=${pageSize}}`);
                 setCards(response.data.cards);
