@@ -5,8 +5,8 @@ import Filter from "../components/Forms/Filter";
 import ChangePagination from "../components/Forms/ChangePagination";
 import axios from "axios";
 import { getCachedData, setCachedData } from "../utils/cache";
-import { Card } from "@chakra-ui/card";
-
+import { Card, useDisclosure } from "@chakra-ui/react";
+import ItemDrawer from "../components/Interface/ItemDrawer";
 function Home() {
     const [cards, setCards] = useState([]);
     const [filteredCards, setFilteredCards] = useState([]);
@@ -16,10 +16,13 @@ function Home() {
     const [cardsName, setCardsName] = useState([]);
     const [rarety, setRarety] = useState("");
     const [types, setTypes] = useState([]);
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [selectedCard, setSelectedCard] = useState({});
+    
 
     useEffect(() => {
         const cachedData = getCachedData();
-        if (cachedData) {
+        if (cachedData && cachedData.length === pageSize) {
             setCards(cachedData);
             setFilteredCards(cachedData);
             return;
@@ -61,8 +64,17 @@ function Home() {
                         />
                     </div>
                 </Card>
-                <CardContainer cards={filteredCards} cardsName={cardsName} setCardsName={setCardsName}/>
+                <CardContainer cards={filteredCards} cardsName={cardsName} setCardsName={setCardsName} onOpen={onOpen} setSelectedCard={setSelectedCard}/>
             </main>
+            <ItemDrawer isOpen={isOpen} onClose={onClose}>
+                <div className="flex flex-col justify-center items-center">
+                    <img src={selectedCard.imageUrl} alt={selectedCard.name} className="w-1/2"/>
+                    <h1 className="text-2xl">{selectedCard.name}</h1>
+                    <p className="text-xl">{selectedCard.type}</p>
+                    <p className="text-xl">{selectedCard.rarity}</p>
+                    <p className="text-xl">{selectedCard.text}</p>
+                </div>
+            </ItemDrawer>
         </div>
     );
 }
