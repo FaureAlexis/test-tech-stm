@@ -4,6 +4,7 @@ import CardContainer from "../components/Interface/CardContainer";
 import Filter from "../components/Forms/Filter";
 import ChangePagination from "../components/Forms/ChangePagination";
 import axios from "axios";
+import { getCachedData, setCachedData } from "../utils/cache";
 import { Card } from "@chakra-ui/card";
 
 function Home() {
@@ -17,11 +18,18 @@ function Home() {
     const [types, setTypes] = useState([]);
 
     useEffect(() => {
+        const cachedData = getCachedData();
+        if (cachedData) {
+            setCards(cachedData);
+            setFilteredCards(cachedData);
+            return;
+        }
         const fetchCards = async () => {
             try {
                 const response = await axios.get(`https://api.magicthegathering.io/v1/cards?page=${currentPage}&pageSize=${pageSize}}`);
                 setCards(response.data.cards);
                 setFilteredCards(response.data.cards);
+                setCachedData(response.data.cards);
             } catch (error) {
                 console.log(error);
             }
