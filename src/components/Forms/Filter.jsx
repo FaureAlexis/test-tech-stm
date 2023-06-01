@@ -1,6 +1,7 @@
 import React from "react";
 import AutoComplete from "./AutoComplete";
 import TypeTag from "../Core/TypeTag";
+import { Button } from "@chakra-ui/react";
 
 const raretyList = [
     "Common",
@@ -32,37 +33,43 @@ function Filter({
     setCards,
     cards,
 }) {
+    const filterCards = () => {
+        let filteredCards = cards;
+
+        if (name !== "") {
+        filteredCards = filteredCards.filter((card) =>
+            card.name.includes(name)
+        );
+        }
+
+        if (rarety !== "") {
+        filteredCards = filteredCards.filter((card) => card.rarity === rarety);
+        }
+
+        if (types.length > 0) {
+        filteredCards = filteredCards.filter((card) =>
+            types.some((type) => card.types.includes(type))
+        );
+        }
+
+        setCards(filteredCards);
+    };
+
     const filterByName = (name) => {
         setName(name);
-        if (name === "") return setCards(cards);
-        const filteredCards = cards.filter((card) => card.name.includes(name));
-        setCards(filteredCards);
     };
 
     const filterByRarity = (rarity) => {
         setRarety(rarity);
-        if (rarity === "") return setCards(cards);
-        const filteredCards = cards.filter((card) => card.rarity === rarity);
-        setCards(filteredCards);
     };
 
     const filterByType = (type) => {
-        if (type === "") return setCards(cards);
-        types.push(type);
-        const filteredCards = cards.filter((card) => {
-            return card.types.some((cardType) => types.includes(cardType));
-        });
-        setCards(filteredCards);
+        setTypes([...types, type]);
     };
 
     const removeType = (type) => {
         const filteredTypes = types.filter((t) => t !== type);
         setTypes(filteredTypes);
-        if (filteredTypes.length === 0) return setCards(cards);
-        const filteredCards = cards.filter((card) => {
-            return card.types.some((cardType) => filteredTypes.includes(cardType));
-        });
-        setCards(filteredCards);
     };
 
     return (
@@ -103,6 +110,7 @@ function Filter({
                         type="type"
                     />
                 </div>
+                <Button onClick={filterCards}>Apply Filters</Button>
             </div>
         </div>
     );

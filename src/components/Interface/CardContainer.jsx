@@ -4,7 +4,7 @@ import React from "react";
 function CardContainer({ cards, cardsName, setCardsName }) {
     return (
         <div className="flex flex-wrap justify-center items-center w-full h-full">
-            {cards.map((card, index) => {
+            {cards.length ? cards.map((card, index) => {
                 let isPresent = false;
                 cardsName.includes(card.name) ? isPresent = true : setCardsName([...cardsName, card.name]);
                 return (
@@ -17,7 +17,7 @@ function CardContainer({ cards, cardsName, setCardsName }) {
                     key={index}
                     isPresent={isPresent}
                 />);
-            })}
+            }) : <p>No cards found</p>}
         </div>
     );
 }
