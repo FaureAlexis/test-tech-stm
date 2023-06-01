@@ -29,7 +29,7 @@ function Card({
                     {name}
                 </h1>
                 <span className="text-sm w-4/5 break-words">
-                    {text.length > 0 && (
+                    {text && text.length > 0 && (
                         text.slice(0, 80).concat("...")
                     )}
                 </span>
