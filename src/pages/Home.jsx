@@ -35,7 +35,7 @@ function Home() {
         <div>
             <NavBar/>
             <main className="flex flex-col items-center justify-center w-full h-full bg-gray-200">
-                <h1 className="text-4xl">Magic The Gathering
+                <h1 className="text-4xl mt-12">Magic The Gathering
                 </h1>
                 <Card className="w-4/5 m-12 p-6 bg-white shadow-lg rounded-lg flex flex-col items-center">
                     <div className="flex flex-col justify-center items-center w-4/5">
